@@ -1,15 +1,26 @@
 # kbc-kmx
 
 ##依赖
-- kbc-cors （目前包含在脚手架内）
+请先安装下面的kbc组件：
+- kbc-cors （目前已包含在脚手架内，不需要额外安装）
 
 ## 功能
 - KMX请求代理：/kmx/*
 - KMX用户验证：/kmx_login
 
 ## 安装
+在pom里添加依赖项：
+```
+<!-- kbc-kmx依赖项 -->
+<dependency>
+    <groupId>org.mitre.dsmiley.httpproxy</groupId>
+    <artifactId>smiley-http-proxy-servlet</artifactId>
+    <version>1.11</version>
+</dependency>
+```
 在application.properties里添加如下配置项：
 ```
+#KMX配置
 kbc.kmx.host=10.12.20.36
 kbc.kmx.port.data.service.v2=8081
 kbc.kmx.port.data.service.v3=8082
