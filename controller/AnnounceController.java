@@ -23,7 +23,7 @@ public class AnnounceController {
     @GetMapping(value = "announces")
     public KbcResponse list() {
         KbcResponse response = new KbcResponse();
-        response.getBody().put("anounces", announceService.list());
+        response.getBody().put("announces", announceService.list());
         return response;
 
     }
@@ -45,7 +45,7 @@ public class AnnounceController {
     @GetMapping(value = "announces/effective")
     public KbcResponse effective() {
         KbcResponse response = new KbcResponse();
-        response.getBody().put("anounces", announceService.list());//TODO: 待修改实现
+        response.getBody().put("announces", announceService.list());//TODO: 待修改实现
         return response;
 
     }
