@@ -12,7 +12,7 @@
 反向代理的用户身份：若session里有`KMX_K2KEY`，反向代理使用该值作为用户身份；否则反向代理使用`application.properties`里配置的`kbc.kmx.k2key.default`作为用户身份。
 
 ## 安装
-在pom里添加依赖项：
+在`pom.xml`里添加依赖项：
 ```
 <!-- kbc-kmx依赖项 -->
 <dependency>
@@ -21,7 +21,7 @@
     <version>1.11</version>
 </dependency>
 ```
-在application.properties里添加如下配置项：
+在`application.properties`里添加如下配置项：
 ```
 #KMX配置
 kbc.kmx.host=10.12.20.36
