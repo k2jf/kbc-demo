@@ -22,8 +22,8 @@ public class KmxProxyConfiguration {
     @Value("${kbc.kmx.host}")
     private String kmxHost;
 
-    @Value("${kbc.kmx.k2key}")
-    private String kmxK2Key;
+    @Value("${kbc.kmx.k2key.default}")
+    private String kmxDefalutK2Key;
 
     @Value("${kbc.kmx.port.data.service.v2}")
     private String kmxPortDataServiceV2;
@@ -71,10 +71,10 @@ public class KmxProxyConfiguration {
         portMap.put("meter/v1", Integer.parseInt(kmxPortMeterV1));
         portMap.put("auth-service", Integer.parseInt(kmxPortAuthService));
 
-        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new KmxProxyServlet(portMap), "/kmx/*");
+        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new KmxProxyServlet(portMap, kmxDefalutK2Key), "/kmx/*");
         servletRegistrationBean.addInitParameter("targetHost", kmxHost);
         servletRegistrationBean.addInitParameter("targetUri", "");
-        servletRegistrationBean.addInitParameter("k2key", kmxK2Key);
+        //servletRegistrationBean.addInitParameter("k2key", kmxDefalutK2Key); //Moved to constructor
         servletRegistrationBean.addInitParameter("corsAllowOrigin", corsAllowOrigin);
         servletRegistrationBean.addInitParameter(ProxyServlet.P_LOG, "true");
         return servletRegistrationBean;

@@ -32,9 +32,11 @@ public class KmxProxyServlet extends ProxyServlet {
      * ...
      */
     private Map<String, Integer> portMap;
+    private String defaultK2key;
 
-    public KmxProxyServlet(Map<String, Integer> portMap) {
+    public KmxProxyServlet(Map<String, Integer> portMap, String defaultK2key) {
         this.portMap = portMap;
+        this.defaultK2key = defaultK2key;
     }
 
     @Override
@@ -55,7 +57,7 @@ public class KmxProxyServlet extends ProxyServlet {
             }
         }
         if (port == 0) {
-            throw new ServletException("Failed to find kmx port: " + kmxUrl);
+            throw new ServletException("Failed to find corresponding kmx port: " + kmxUrl);
         }
 
         String kmxHost = getConfigParam("targetHost");
@@ -97,7 +99,9 @@ public class KmxProxyServlet extends ProxyServlet {
     @Override
     protected void copyRequestHeaders(HttpServletRequest servletRequest, HttpRequest proxyRequest) {
         super.copyRequestHeaders(servletRequest, proxyRequest);
-        proxyRequest.addHeader(new BasicHeader("K2_KEY", getConfigParam("k2key")));
+        //若session里有k2key，使用session里的k2key，否则使用properties里默认的k2key
+        String sessionK2key = (String) servletRequest.getSession().getAttribute("KMX_K2KEY");
+        proxyRequest.addHeader(new BasicHeader("K2_KEY", sessionK2key != null ? sessionK2key : defaultK2key));
     }
 
     @Override
