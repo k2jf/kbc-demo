@@ -52,6 +52,9 @@ public class KmxProxyConfiguration {
     @Value("${kbc.kmx.port.auth.service}")
     private String kmxPortAuthService;
 
+    @Value("${kbc.kmx.port.app.rest}")
+    private String kmxPortAppRest;
+
     @Value("${kbc.cors.allow.origin}")
     private String corsAllowOrigin;
 
@@ -70,6 +73,7 @@ public class KmxProxyConfiguration {
         portMap.put("ecf-rest", Integer.parseInt(kmxPortEcfRest));
         portMap.put("meter/v1", Integer.parseInt(kmxPortMeterV1));
         portMap.put("auth-service", Integer.parseInt(kmxPortAuthService));
+        portMap.put("app-rest", Integer.parseInt(kmxPortAppRest));
 
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new KmxProxyServlet(portMap, kmxDefalutK2Key), "/kmx/*");
         servletRegistrationBean.addInitParameter("targetHost", kmxHost);
