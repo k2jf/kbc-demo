@@ -34,6 +34,7 @@ kbc.kmx.port.pas.services=28085
 kbc.kmx.port.ecf.rest=28102
 kbc.kmx.port.meter.v1=28100
 kbc.kmx.port.auth.service=28091
+kbc.kmx.port.app.rest=28093
 kbc.kmx.k2key.default=<a_default_k2key_if_you_don't_put_it_in_session>
 ```
 
