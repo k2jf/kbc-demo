@@ -33,7 +33,8 @@ public class AppLogAspect {
 
     //单个包@Pointcut("execution(* com.k2data.kbc.audit.controller..*.*(..))")
     //多个包@Pointcut("execution(* *..*method1()) || execution(* *..*method2())")
-    @Pointcut("execution(* com.k2data.kbc.audit.controller..*.*(..)) ||  execution(* com.k2data.kbc.announce.controller..*.*(..))")
+    //当前包下所有以Controller为后缀的类的任一方法@Pointcut("execution(* com.k2data.kbc..*Controller.*(..))")
+    @Pointcut("execution(* com.k2data.kbc..*Controller.*(..))")
     public void pointcut() {
     }
 

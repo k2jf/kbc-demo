@@ -19,7 +19,7 @@ public class AuditLogController {
     @Autowired
     AuditLogService auditLogService;
 
-    @ApiOperation("获取日志列表")
+    @ApiOperation("获取审计日志列表")
     @GetMapping(value = "auditLogList")
     public KbcResponse list(AuditLog AuditLog) {
         Map<String, Object> map = new HashMap<>();
