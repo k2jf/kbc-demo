@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.k2data.kbc.properties.dao.PropertiesMapper">
+    <resultMap id="BaseResultMap" type="com.k2data.kbc.properties.model.Properties">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="group_key" jdbcType="VARCHAR" property="groupKey"/>
+        <result column="key_name" jdbcType="VARCHAR" property="keyName"/>
+        <result column="key_value" jdbcType="VARCHAR" property="keyValue"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.k2data.kbc.properties.model.Properties">
+        INSERT INTO kbc_properties (
+         id , creator , create_date ,
+         group_key , key_name , key_value)
+        VALUES (
+        #{id,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+        #{group_key,jdbcType=VARCHAR}, #{key_name,jdbcType=VARCHAR}, #{key_value,jdbcType=VARCHAR}
+        );
+    </insert>
+
+    <select id="list" resultMap="BaseResultMap" parameterType="map">
+        select id , creator , create_date ,
+        group_key , key_name , key_value
+        from kbc_properties
+        <where>
+            <if test="creator != null">
+                and creator like CONCAT('%', #{creator}, '%')
+            </if>
+            <if test="groupKey != null">
+                and group_key like CONCAT('%', #{groupKey}, '%')
+            </if>
+            <if test="keyName != null">
+                and key_name like CONCAT('%', #{keyName}, '%')
+            </if>
+            <if test="keyValue != null">
+                and key_value like CONCAT('%', #{keyValue}, '%')
+            </if>
+
+            <!--  <if test="beginDate != null">
+                  <![CDATA[ and create_date >= #{beginDate} ]]>
+              </if>
+              <if test="endDate != null">
+                  <![CDATA[ and create_date <= #{endDate} ]]>
+              </if>-->
+        </where>
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from kbc_properties
+          where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+</mapper>
