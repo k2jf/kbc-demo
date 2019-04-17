@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.k2data.kbc.usrmgr.dao.ResourceTypeMapper">
+    <resultMap id="BaseResultMap" type="com.k2data.kbc.usrmgr.model.ResourceType">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="operations" jdbcType="VARCHAR" property="operations"/>
+    </resultMap>
+
+    <select id="list"
+        resultMap="BaseResultMap">
+        SELECT *
+        FROM resource_type
+    </select>
+</mapper>
