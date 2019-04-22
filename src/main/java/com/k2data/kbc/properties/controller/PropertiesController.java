@@ -28,9 +28,8 @@ public class PropertiesController {
     @GetMapping(value = "propList")
     public KbcResponse list(Properties properties) {
         Map<String, Object> map = new HashMap<>();
-        map.put("creator", properties.getCreator());
-        map.put("keyName", properties.getKeyName());
-        map.put("keyValue", properties.getKeyValue());
+        map.put("key", properties.getKey());
+        map.put("value", properties.getValue());
         map.put("groupKey", properties.getGroupKey());
         KbcResponse response = new KbcResponse();
         response.getBody().put("audiLogList", propertiesService.list(map));
@@ -51,7 +50,7 @@ public class PropertiesController {
     public KbcResponse delete(@PathVariable int id) throws KbcBizException {
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
-        if (propertiesService.list(map).get(0) == null) {
+        if (0 != propertiesService.list(map).size()) {
             throw new KbcBizException("Target does not exist");
         }
         propertiesService.deleteByPrimaryKey(id);

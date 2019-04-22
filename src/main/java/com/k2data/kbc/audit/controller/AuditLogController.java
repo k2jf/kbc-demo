@@ -1,6 +1,7 @@
 package com.k2data.kbc.audit.controller;
 
 import com.k2data.kbc.api.KbcResponse;
+import com.k2data.kbc.audit.annotation.Operation;
 import com.k2data.kbc.audit.model.AuditLog;
 import com.k2data.kbc.audit.service.AuditLogService;
 import io.swagger.annotations.Api;

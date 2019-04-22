@@ -3,39 +3,36 @@
 <mapper namespace="com.k2data.kbc.properties.dao.PropertiesMapper">
     <resultMap id="BaseResultMap" type="com.k2data.kbc.properties.model.Properties">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="group_key" jdbcType="VARCHAR" property="groupKey"/>
-        <result column="key_name" jdbcType="VARCHAR" property="keyName"/>
-        <result column="key_value" jdbcType="VARCHAR" property="keyValue"/>
-        <result column="creator" jdbcType="VARCHAR" property="creator"/>
-        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="c_group_key" jdbcType="VARCHAR" property="groupKey"/>
+        <result column="c_key" jdbcType="VARCHAR" property="key"/>
+        <result column="c_value" jdbcType="VARCHAR" property="value"/>
+        <result column="c_create_date" jdbcType="TIMESTAMP" property="createDate"/>
     </resultMap>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.k2data.kbc.properties.model.Properties">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+        parameterType="com.k2data.kbc.properties.model.Properties">
         INSERT INTO kbc_properties (
-         id , creator , create_date ,
-         group_key , key_name , key_value)
+         id ,  c_create_date ,
+         c_group_key , c_key , c_value)
         VALUES (
-        #{id,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
-        #{group_key,jdbcType=VARCHAR}, #{key_name,jdbcType=VARCHAR}, #{key_value,jdbcType=VARCHAR}
+        #{id,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP},
+        #{groupKey,jdbcType=VARCHAR}, #{key,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}
         );
     </insert>
 
     <select id="list" resultMap="BaseResultMap" parameterType="map">
-        select id , creator , create_date ,
+        select id , create_date ,
         group_key , key_name , key_value
         from kbc_properties
         <where>
-            <if test="creator != null">
-                and creator like CONCAT('%', #{creator}, '%')
-            </if>
             <if test="groupKey != null">
-                and group_key like CONCAT('%', #{groupKey}, '%')
+                and c_group_key like CONCAT('%', #{groupKey}, '%')
             </if>
             <if test="keyName != null">
-                and key_name like CONCAT('%', #{keyName}, '%')
+                and c_key like CONCAT('%', #{key}, '%')
             </if>
             <if test="keyValue != null">
-                and key_value like CONCAT('%', #{keyValue}, '%')
+                and c_value like CONCAT('%', #{value}, '%')
             </if>
 
             <!--  <if test="beginDate != null">
