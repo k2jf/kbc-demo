@@ -6,13 +6,11 @@ public class Properties {
 
     private Integer id;
 
-    private String creator;
-
     private Date createDate;
 
-    private String keyName;
+    private String key;
 
-    private String keyValue;
+    private String value;
 
     private String groupKey;
 
@@ -24,14 +22,6 @@ public class Properties {
         this.id = id;
     }
 
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
     public Date getCreateDate() {
         return createDate;
     }
@@ -40,20 +30,20 @@ public class Properties {
         this.createDate = createDate;
     }
 
-    public String getKeyName() {
-        return keyName;
+    public String getKey() {
+        return key;
     }
 
-    public void setKeyName(String keyName) {
-        this.keyName = keyName;
+    public void setKey(String key) {
+        this.key = key;
     }
 
-    public String getKeyValue() {
-        return keyValue;
+    public String getValue() {
+        return value;
     }
 
-    public void setKeyValue(String keyValue) {
-        this.keyValue = keyValue;
+    public void setValue(String value) {
+        this.value = value;
     }
 
     public String getGroupKey() {
