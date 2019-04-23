@@ -35,7 +35,6 @@
          )
     </insert>
 
-
     <select id="list" resultMap="BaseResultMap" parameterType="map">
         select id, c_creator, c_request_start_time, c_ip, c_request_url, c_request_method,
         c_user_agent, c_operation, c_request_finsh_time, c_return_time, c_return_data,
@@ -44,14 +43,17 @@
         from kbc_t_audit_log
         <where>
             <if test="creator != null">
-                and creator like CONCAT('%', #{creator}, '%')
+                and c_creator like CONCAT('%', #{creator}, '%')
             </if>
-            <!--<if test="beginDate != null">
-                <![CDATA[ and create_date >= #{beginDate} ]]>
+            <if test="id != null">
+                and id =#{id}
+            </if>
+            <if test="beginDate != null">
+                <![CDATA[ and c_request_start_time >= #{beginDate} ]]>
             </if>
             <if test="endDate != null">
-                <![CDATA[ and create_date <= #{endDate} ]]>
-            </if>-->
+                <![CDATA[ and c_request_start_time <= #{endDate} ]]>
+            </if>
         </where>
     </select>
 </mapper>

@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @Api("日志管理接口")
@@ -21,10 +22,15 @@ public class AuditLogController {
     AuditLogService auditLogService;
 
     @ApiOperation("获取审计日志列表")
-    @GetMapping(value = "auditLogList")
-    public KbcResponse list(AuditLog AuditLog) {
+    @GetMapping(value = {"auditLogList", "auditLogList/{creator}", "auditLogList/{beginDate}/{endDate}",
+        "auditLogList/{creator}/{beginDate}/{endDate}"})
+    @Operation(value = "查询log列表")
+    public KbcResponse list(@PathVariable(required = false) String creator,
+        @PathVariable(required = false) String beginDate, @PathVariable(required = false) String endDate) {
         Map<String, Object> map = new HashMap<>();
-        map.put("creator", AuditLog.getCreator());
+        map.put("creator", creator);
+        map.put("beginDate", beginDate);
+        map.put("endDate", endDate);
         KbcResponse response = new KbcResponse();
         response.getBody().put("audiLogList", auditLogService.list(map));
         return response;

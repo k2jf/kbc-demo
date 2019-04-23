@@ -58,11 +58,11 @@ public class AppLogAspect {
     @Before("serviceStatistics(operation)")
     public void doBefore(JoinPoint joinPoint, Operation operation) throws Exception {
         logger.info("doBefore():{}", joinPoint.toString());
-        //绑定当前线程
+        //绑定当前线程计算耗时
         threadLocal.set(System.currentTimeMillis());
         Map<String, Object> joinPointInfoMap = RequestUtil.getJoinPointInfoMap(joinPoint);
         log.setRequestUrl(request.getRequestURL().toString());
-        log.setRequestStartTime(new Date());
+        log.setRequestStartTime(new Date(System.currentTimeMillis()));
         log.setClassMethodName(joinPointInfoMap.get("classMethodName").toString());//具体路径
         log.setClassMethodPath(joinPointInfoMap.get("classMethodPath").toString());//具体路径
         log.setIp(RequestUtil.getRequestIp(request));
@@ -83,7 +83,7 @@ public class AppLogAspect {
     @AfterReturning(value = "serviceStatistics(operation)", returning = "retrunValue")
     public void doAfterReturning(Operation operation, Object retrunValue) {
         logger.info("doAfterReturning(){}");
-        log.setReturnTime(DateUtils.parseDate(String.valueOf(System.currentTimeMillis())));
+        log.setReturnTime(new Date(System.currentTimeMillis()));
         log.setReturnData(JSON.toJSONString(retrunValue, SerializerFeature.DisableCircularReferenceDetect,
             SerializerFeature.WriteMapNullValue));
         log.setRequestFinshTime(System.currentTimeMillis() - threadLocal.get());
@@ -98,7 +98,7 @@ public class AppLogAspect {
         logger.info("doAfterThrowing(){}" + e);
         exLog.setcExceptionJson(JSON.toJSONString(e, SerializerFeature.DisableCircularReferenceDetect,
             SerializerFeature.WriteMapNullValue));
-        exLog.setcExceptionCreateTime(DateUtils.parseDate(String.valueOf(System.currentTimeMillis())));
+        exLog.setcExceptionCreateTime(new Date(System.currentTimeMillis()));
         exLog.setcExceptionMessage(e.getMessage());
         LogUtils.saveExLogRunnable(exLog);
     }

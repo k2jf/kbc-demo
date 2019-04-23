@@ -82,7 +82,7 @@
             <version>3.6</version>
         </dependency>
 
-        <!-- fastjson json-->
+        <!-- fastJson json-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
