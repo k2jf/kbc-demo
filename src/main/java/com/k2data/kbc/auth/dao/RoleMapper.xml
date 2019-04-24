@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.k2data.kbc.auth.dao.RoleMapper">
+    <resultMap id="BaseResultMap" type="com.k2data.kbc.auth.model.Role">
+        <id column="c_id" jdbcType="INTEGER" property="id"/>
+        <result column="c_name" jdbcType="VARCHAR" property="name"/>
+        <result column="c_description" jdbcType="VARCHAR" property="description"/>
+    </resultMap>
+
+    <insert id="insert" keyProperty="id">
+        INSERT INTO t_role (
+        c_name,
+        c_description
+        )
+        VALUES (
+        #{name},
+        #{description}
+        )
+    </insert>
+
+    <delete id="delete">
+        DELETE
+        FROM t_role
+        WHERE c_id = #{arg0}
+    </delete>
+
+    <select id="list"
+        parameterType="com.k2data.kbc.auth.dao.condition.RoleCondition"
+        resultMap="BaseResultMap">
+        SELECT *
+        FROM t_role
+        WHERE 1 = 1
+        <if test="fuzzyName != null and fuzzyName != ''">
+            <![CDATA[ AND c_name LIKE CONCAT('%', #{fuzzyName},'%')]]>
+        </if>
+        <if test="ids != null and ids.size > 0">
+            <![CDATA[ AND c_id IN ]]>
+            <foreach close=")" collection="ids" index="index" item="item" open="("
+                separator=",">
+                <![CDATA[ #{item} ]]>
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getById" resultMap="BaseResultMap">
+        SELECT *
+        FROM t_role
+        WHERE c_id=#{arg0}
+    </select>
+</mapper>

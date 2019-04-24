@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.k2data.kbc.auth.dao.OwnerRoleMapper">
+    <resultMap id="BaseResultMap" type="com.k2data.kbc.auth.model.OwnerRole">
+        <id column="c_owner_id" property="ownerId"/>
+        <result column="c_role_id" property="roleId"/>
+        <result column="c_effect_time" property="effectTime"/>
+        <result column="c_expire_time" property="expireTime"/>
+        <result column="c_disabled" property="disabled"/>
+    </resultMap>
+
+    <insert id="insert">
+        INSERT INTO t_owner_role (
+        c_owner_id,
+        c_role_id,
+        c_effect_time,
+        c_expire_time,
+        c_disabled
+        )
+        VALUES (
+        #{ownerId},
+        #{roleId},
+        #{effectTime},
+        #{expireTime},
+        #{disabled}
+        )
+    </insert>
+
+    <delete id="deleteByOwnerId">
+        DELETE
+        FROM t_owner_role
+        WHERE c_owner_id = #{arg0}
+    </delete>
+
+    <delete id="deleteByOwnerIdAndRoleId">
+        DELETE
+        FROM t_owner_role
+        WHERE c_owner_id = #{ownerId} AND c_role_id = #{roleId}
+    </delete>
+
+    <update id="update" parameterType="com.k2data.kbc.auth.model.OwnerRole">
+        UPDATE t_owner_role
+        <set>
+            <if test="effectTime != null">
+                c_effect_time = #{effectTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="expireTime != null">
+                c_expire_time = #{expireTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="disabled != null">
+                c_disabled = #{disabled,jdbcType=BOOLEAN},
+            </if>
+        </set>
+        WHERE c_owner_id = #{ownerId,jdbcType=BIGINT}
+        AND c_role_id = #{roleId,jdbcType=BIGINT}
+    </update>
+
+    <select id="getOwnerIdsByRoleId" resultType="java.lang.Integer">
+        SELECT c_owner_id
+        FROM t_owner_role
+        WHERE c_role_id = #{arg0}
+--         AND (c_disabled = 1 OR c_disabled IS NULL)
+--         AND (c_effect_time IS NULL OR NOW() > c_effect_time)
+--         AND (c_expire_time IS NULL OR c_expire_time > NOW())
+    </select>
+
+    <select id="getRoleIdsByOwnerId" resultType="java.lang.Integer">
+        SELECT c_role_id
+        FROM t_owner_role
+        WHERE c_owner_id = #{arg0}
+--         AND (c_disabled = 1 OR c_disabled IS NULL)
+--         AND (c_effect_time IS NULL OR NOW() > c_effect_time)
+--         AND (c_expire_time IS NULL OR c_expire_time > NOW())
+    </select>
+
+    <select id="getByOwnerId" resultMap="BaseResultMap">
+        SELECT *
+        FROM t_owner_role
+        WHERE c_owner_id = #{arg0}
+        -- AND (c_disabled = 1 OR c_disabled IS NULL)
+        -- AND (c_effect_time IS NULL OR NOW() > c_effect_time)
+        -- AND (c_expire_time IS NULL OR c_expire_time > NOW())
+    </select>
+</mapper>

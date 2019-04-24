@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.k2data.kbc.auth.dao.UserUsrgrpMapper">
+    <insert id="insert">
+        INSERT INTO t_user_usrgrp (
+        c_user_id,
+        c_usrgrp_id
+        )
+        VALUES (
+        #{userId},
+        #{usrgrpId}
+        )
+    </insert>
+
+    <delete id="deleteByUserId">
+        DELETE
+        FROM t_user_usrgrp
+        WHERE c_user_id = #{arg0}
+    </delete>
+
+    <delete id="deleteByUserIdAndUsrgrpId">
+        DELETE
+        FROM t_user_usrgrp
+        WHERE c_user_id = #{userId} AND c_usrgrp_id = #{usrgrpId}
+    </delete>
+
+    <select id="getUsrgrpIdsByUserId" resultType="java.lang.Integer">
+        SELECT c_usrgrp_id
+        FROM t_user_usrgrp
+        WHERE c_user_id = #{arg0}
+    </select>
+
+    <select id="getUserIdsByUsrgrpId" resultType="java.lang.Integer">
+        SELECT c_user_id
+        FROM t_user_usrgrp
+        WHERE c_usrgrp_id = #{arg0}
+    </select>
+</mapper>

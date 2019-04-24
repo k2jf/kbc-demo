@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.k2data.kbc.auth.dao.UserGroupMapper">
+    <resultMap id="BaseResultMap" type="com.k2data.kbc.auth.model.UserGroup">
+        <id column="c_id" jdbcType="INTEGER" property="id"/>
+        <result column="c_name" jdbcType="VARCHAR" property="name"/>
+    </resultMap>
+
+    <insert id="insert" keyProperty="id">
+        INSERT INTO t_user_group (
+        c_name
+        )
+        VALUES (
+        #{name}
+        )
+    </insert>
+
+    <delete id="delete">
+        DELETE
+        FROM t_user_group
+        WHERE c_id = #{arg0}
+    </delete>
+
+    <select id="getById" resultMap="BaseResultMap">
+        SELECT *
+        FROM t_user_group
+        WHERE c_id = #{arg0}
+    </select>
+    <select id="list"
+        parameterType="com.k2data.kbc.auth.dao.condition.UserGroupCondition"
+        resultMap="BaseResultMap">
+        SELECT *
+        FROM t_user_group
+        WHERE 1 = 1
+        <if test="fuzzyName != null and fuzzyName != ''">
+            <![CDATA[ AND c_name LIKE CONCAT('%', #{fuzzyName},'%')]]>
+        </if>
+        <if test="ids != null and ids.size > 0">
+            <![CDATA[ AND c_id IN ]]>
+            <foreach close=")" collection="ids" index="index" item="item" open="("
+                separator=",">
+                <![CDATA[ #{item} ]]>
+            </foreach>
+        </if>
+    </select>
+</mapper>
