@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.k2data.kbc.auth.dao.ResourceMapper">
+    <resultMap id="BaseResultMap" type="com.k2data.kbc.auth.model.Resource">
+        <id column="c_id" jdbcType="INTEGER" property="id"/>
+        <result column="c_type_id" jdbcType="INTEGER" property="typeId"/>
+        <result column="c_name" jdbcType="VARCHAR" property="name"/>
+    </resultMap>
+
+    <select id="getById" resultMap="BaseResultMap">
+        SELECT *
+        FROM t_resource
+        WHERE c_id = #{arg0}
+    </select>
+
+    <select id="list"
+        parameterType="com.k2data.kbc.auth.dao.condition.ResourceCondition"
+        resultMap="BaseResultMap">
+        SELECT *
+        FROM t_resource
+        WHERE 1 = 1
+        <if test="fuzzyName != null and fuzzyName != ''">
+            <![CDATA[ AND c_name LIKE CONCAT('%', #{fuzzyName},'%')]]>
+        </if>
+        <if test="typeId != null">
+            <![CDATA[ AND c_type_id = #{typeId}]]>
+        </if>
+    </select>
+</mapper>

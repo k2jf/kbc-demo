@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.k2data.kbc.auth.dao.OwnerPermissionMapper">
+    <resultMap id="BaseResultMap" type="com.k2data.kbc.auth.model.OwnerPermission">
+        <id column="c_owner_id" property="ownerId"/>
+        <result column="c_resource_id" property="resourceId"/>
+        <result column="c_operations" property="operations"/>
+        <result column="c_effect_time" property="effectTime"/>
+        <result column="c_expire_time" property="expireTime"/>
+        <result column="c_disabled" property="disabled"/>
+    </resultMap>
+
+    <insert id="insert" keyProperty="id">
+        INSERT INTO t_owner_permission (
+        c_owner_id,
+        c_resource_id,
+        c_operations,
+        c_effect_time,
+        c_expire_time,
+        c_disabled
+        )
+        VALUES (
+        #{ownerId},
+        #{resourceId},
+        #{operations},
+        #{effectTime},
+        #{expireTime},
+        #{disabled}
+        )
+    </insert>
+
+    <delete id="deleteByUserId">
+        DELETE
+        FROM t_owner_permission
+        WHERE c_owner_id = #{arg0}
+    </delete>
+
+    <delete id="delete">
+        DELETE
+        FROM t_owner_permission
+        WHERE c_owner_id = #{ownerId}
+        AND c_resource_id = #{resourceId}
+    </delete>
+
+    <delete id="deleteByOwnerId">
+        DELETE
+        FROM t_owner_permission
+        WHERE c_owner_id = #{arg0}
+    </delete>
+
+    <update id="update" parameterType="com.k2data.kbc.auth.model.OwnerPermission">
+        UPDATE t_owner_permission
+        <set>
+            <if test="operations != null">
+                c_operations = #{operations,jdbcType=VARCHAR},
+            </if>
+            <if test="effectTime != null">
+                c_effect_time = #{effectTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="expireTime != null">
+                c_expire_time = #{expireTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="disabled != null">
+                c_disabled = #{disabled,jdbcType=BOOLEAN},
+            </if>
+        </set>
+        WHERE c_owner_id = #{ownerId,jdbcType=BIGINT}
+        AND c_resource_id = #{resourceId,jdbcType=BIGINT}
+    </update>
+
+    <select id="list"
+        parameterType="com.k2data.kbc.auth.dao.condition.OwnerPermissionCondition"
+        resultMap="BaseResultMap">
+        SELECT *
+        FROM t_owner_permission
+        WHERE 1 = 1
+        <if test="ownerId != null and ownerId != ''">
+            <![CDATA[ AND c_owner_id = #{ownerId}]]>
+        </if>
+        <if test="resourceIds != null and resourceIds.size > 0">
+            <![CDATA[ AND c_resource_id IN ]]>
+            <foreach close=")" collection="resourceIds" index="index" item="item" open="("
+                separator=",">
+                <![CDATA[ #{item} ]]>
+            </foreach>
+        </if>
+        -- AND (c_disabled = 1 OR c_disabled IS NULL)
+        -- AND (c_effect_time IS NULL OR NOW() > c_effect_time)
+        -- AND (c_expire_time IS NULL OR c_expire_time > NOW())
+    </select>
+
+    <select id="getByOwnerId" resultMap="BaseResultMap">
+        SELECT *
+        FROM t_owner_permission
+        WHERE c_owner_id = #{arg0}
+--         AND (c_disabled = 1 OR c_disabled IS NULL)
+--         AND (c_effect_time IS NULL OR NOW() > c_effect_time)
+--         AND (c_expire_time IS NULL OR c_expire_time > NOW())
+    </select>
+</mapper>
