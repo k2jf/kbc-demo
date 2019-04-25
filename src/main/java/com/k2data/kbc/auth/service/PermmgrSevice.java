@@ -458,10 +458,6 @@ public class PermmgrSevice {
 
         // 过滤掉不可用的
         for (OwnerRole ownerRole : ownerRoles) {
-            if (ownerRole.getDisabled()) {
-                continue;
-            }
-
             List<RolePermission> rolePermissions = rolePermissionMapper
                 .getByRoleId(ownerRole.getRoleId());
             List<PermissionResponse> rolePermissionResponse = buildPermissionResponses(ownerRole,
