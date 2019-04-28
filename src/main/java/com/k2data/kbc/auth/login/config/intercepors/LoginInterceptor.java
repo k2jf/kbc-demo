@@ -1,7 +1,7 @@
-package com.k2data.kbc.login.config.intercepors;
+package com.k2data.kbc.auth.login.config.intercepors;
 
 import com.k2data.kbc.api.KbcBizException;
-import com.k2data.kbc.login.entity.User;
+import com.k2data.kbc.auth.login.entity.User;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;

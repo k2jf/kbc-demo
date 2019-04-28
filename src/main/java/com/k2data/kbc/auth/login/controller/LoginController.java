@@ -1,8 +1,8 @@
-package com.k2data.kbc.login.controller;
+package com.k2data.kbc.auth.login.controller;
 
 import com.k2data.kbc.api.KbcBizException;
 import com.k2data.kbc.api.KbcResponse;
-import com.k2data.kbc.login.entity.User;
+import com.k2data.kbc.auth.login.entity.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;

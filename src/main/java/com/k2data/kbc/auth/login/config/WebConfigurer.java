@@ -1,6 +1,6 @@
-package com.k2data.kbc.login.config;
+package com.k2data.kbc.auth.login.config;
 
-import com.k2data.kbc.login.config.intercepors.LoginInterceptor;
+import com.k2data.kbc.auth.login.config.intercepors.LoginInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
