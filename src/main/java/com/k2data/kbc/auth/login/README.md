@@ -7,19 +7,16 @@
 wangliheng@k2data.com.cn
 
 
-
-
-
 ## git拉取示例
 ```
 1. git remote add -f kbc-auth-login git@github.com:k2jf/kbc-auth-login.git
 
-2. git subtree add -P src/main/java/com/k2data/kbc/login kbc-auth-login master --squash
+2. git subtree add -P src/main/java/com/k2data/kbc/auth/login kbc-auth-login master --squash
 ```
 
 ##说明
 ```
-1. 不拦截路径：“/login”、"/register"
+1. 不拦截路径："/login"、"/register"
 2. 登录接口
 
 ```
