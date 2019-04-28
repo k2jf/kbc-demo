@@ -5,11 +5,11 @@ import java.util.Date;
 public class ExceptionLog {
     private Integer id;
 
-    private String cExceptionJson;
+    private String exceptionJson;
 
-    private String cExceptionMessage;
+    private String exceptionMessage;
 
-    private Date cExceptionCreateTime;
+    private Date exceptionCreateTime;
 
     public Integer getId() {
         return id;
@@ -19,27 +19,27 @@ public class ExceptionLog {
         this.id = id;
     }
 
-    public String getcExceptionJson() {
-        return cExceptionJson;
+    public String getExceptionJson() {
+        return exceptionJson;
     }
 
-    public void setcExceptionJson(String cExceptionJson) {
-        this.cExceptionJson = cExceptionJson == null ? null : cExceptionJson.trim();
+    public void setExceptionJson(String exceptionJson) {
+        this.exceptionJson = exceptionJson;
     }
 
-    public String getcExceptionMessage() {
-        return cExceptionMessage;
+    public String getExceptionMessage() {
+        return exceptionMessage;
     }
 
-    public void setcExceptionMessage(String cExceptionMessage) {
-        this.cExceptionMessage = cExceptionMessage == null ? null : cExceptionMessage.trim();
+    public void setExceptionMessage(String exceptionMessage) {
+        this.exceptionMessage = exceptionMessage;
     }
 
-    public Date getcExceptionCreateTime() {
-        return cExceptionCreateTime;
+    public Date getExceptionCreateTime() {
+        return exceptionCreateTime;
     }
 
-    public void setcExceptionCreateTime(Date cExceptionCreateTime) {
-        this.cExceptionCreateTime = cExceptionCreateTime;
+    public void setExceptionCreateTime(Date exceptionCreateTime) {
+        this.exceptionCreateTime = exceptionCreateTime;
     }
 }
