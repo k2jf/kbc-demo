@@ -16,11 +16,11 @@ aop依赖
             <version>3.6</version>
         </dependency>
         
-fastjson json 依赖
+fastjson json 依赖注意版本
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.12</version>
+            <version>1.2.29</version>
         </dependency>
 #注意切面拦截包配置:使用标配置的方法
 
@@ -42,7 +42,6 @@ CREATE TABLE `kbc_t_audit_log` (
   `c_params` text COLLATE utf8_bin,
   `c_request_finsh_time` int(11) DEFAULT NULL COMMENT '请求耗时 ms',
   `c_return_time` datetime DEFAULT NULL COMMENT '接口返回时间',
-  `c_return_data` text COLLATE utf8_bin COMMENT '接口返回值',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='日志表';
 
