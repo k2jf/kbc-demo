@@ -27,10 +27,10 @@ kbc.login.interceptor.allow.origin=/login,/logs
 
 ##说明
 ```
-1. 不拦截路径："/login"、"/register"
-2. 登录接口
+不拦截路径："/login"
 
 ```
+## 初始登录接口
 请求参数
 
 | 属性        | 说明     | 类型   | 默认值 |
@@ -38,4 +38,4 @@ kbc.login.interceptor.allow.origin=/login,/logs
 | userName | 用户名 | String | Null | 
 | password | 密码 | String | Null |
 
-http://localhost:9080/login?userName=admin&password=admin
+http://localhost:9080/login?userName=admin&password=96e79218965eb72c92a549dd5a330112
