@@ -1,4 +1,4 @@
-package com.k2data.kbc.auth.login.controller;
+package com.k2data.kbc.login.controller;
 
 import com.k2data.kbc.api.KbcBizException;
 import com.k2data.kbc.api.KbcResponse;

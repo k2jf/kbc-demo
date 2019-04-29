@@ -1,4 +1,4 @@
-# kbc-auth-login
+# kbc-login
 
 ## 功能
 用户验证
@@ -9,9 +9,9 @@ wangliheng@k2data.com.cn
 
 ## git拉取示例
 ```
-1. git remote add -f kbc-auth-login git@github.com:k2jf/kbc-auth-login.git
+1. git remote add -f kbc-login git@github.com:k2jf/kbc-login.git
 
-2. git subtree add -P src/main/java/com/k2data/kbc/auth/login kbc-auth-login master --squash
+2. git subtree add -P src/main/java/com/k2data/kbc/login kbc-login master --squash
 ```
 
 ##说明

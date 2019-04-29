@@ -1,4 +1,4 @@
-package com.k2data.kbc.auth.login.config.intercepors;
+package com.k2data.kbc.login.config.intercepors;
 
 import com.k2data.kbc.api.KbcBizException;
 import org.springframework.lang.Nullable;
