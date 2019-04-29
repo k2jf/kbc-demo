@@ -167,11 +167,11 @@ public class UsrmgrService {
         return new UserDetailResponse(user, permissionResponses);
     }
 
-    public boolean validateUserPassword(Integer userId, String password) {
+    public boolean validateUserPassword(String name, String password) {
         if (StringUtils.isEmpty(password)) {
             return false;
         }
-        User user = userMapper.getById(userId);
+        User user = userMapper.getByName(name);
         if (null == user) {
             return false;
         }

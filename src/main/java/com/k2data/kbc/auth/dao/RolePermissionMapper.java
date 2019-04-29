@@ -1,6 +1,5 @@
 package com.k2data.kbc.auth.dao;
 
-import com.k2data.kbc.auth.dao.condition.RolePermissionCondition;
 import com.k2data.kbc.auth.model.RolePermission;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
@@ -11,6 +10,8 @@ public interface RolePermissionMapper {
     void insert(RolePermission rolePermission);
 
     void delete(Integer roleId, Integer resourceId);
+
+    void update(RolePermission rolePermission);
 
     List<RolePermission> getByRoleId(Integer roleId);
 

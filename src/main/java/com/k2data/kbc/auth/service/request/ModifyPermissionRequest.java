@@ -2,9 +2,9 @@ package com.k2data.kbc.auth.service.request;
 
 public class ModifyPermissionRequest {
 
-    private String resourceIds;
+    private Integer resourceTypeId;
 
-    private String operations;
+    private String resourceIds;
 
     public String getResourceIds() {
         return resourceIds;
@@ -14,11 +14,11 @@ public class ModifyPermissionRequest {
         this.resourceIds = resourceIds;
     }
 
-    public String getOperations() {
-        return operations;
+    public Integer getResourceTypeId() {
+        return resourceTypeId;
     }
 
-    public void setOperations(String operations) {
-        this.operations = operations;
+    public void setResourceTypeId(Integer resourceTypeId) {
+        this.resourceTypeId = resourceTypeId;
     }
 }

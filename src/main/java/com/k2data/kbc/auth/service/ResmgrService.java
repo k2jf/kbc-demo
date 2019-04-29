@@ -40,6 +40,19 @@ public class ResmgrService {
         return resourceMapper.list(condition);
     }
 
+    public boolean existed(Integer resourceId, List<Resource> resources) {
+        if (null == resources) {
+            return false;
+        }
+        for (Resource resource : resources) {
+            if (resource.getId() == resourceId) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public String getNameById(Integer id) {
         Resource resource = resourceMapper.getById(id);
         return null == resource ? null : resource.getName();
