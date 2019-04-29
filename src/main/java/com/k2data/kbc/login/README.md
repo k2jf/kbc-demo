@@ -9,6 +9,14 @@ wangliheng@k2data.com.cn
 ## 依赖组件
 kbc-auth
 
+## application.properties 配置
+```
+kbc.login.interceptor.allow.origin=/login
+kbc.login.interceptor.intercept.origin=/**
+
+kbc.login.interceptor.allow.origin 如果是多个路径用','隔开，如：
+kbc.login.interceptor.allow.origin=/login,/logs
+```
 
 ## git拉取示例
 ```
