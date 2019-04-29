@@ -1,4 +1,4 @@
-package com.k2data.kbc.login.entity;
+package com.k2data.kbc.auth.login.entity;
 
 public class User {
 

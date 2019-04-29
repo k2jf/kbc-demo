@@ -24,7 +24,12 @@ cd kbc-demo
 mvn spring-boot:run
 ```
 
+###kbc-auth-login  如需登录
+```
+http://localhost:9080/login?userName=admin&password=admin
+```
 ### 查看接口文档
 ```
 http://localhost:9080/swagger-ui.html#/
+
 ```
