@@ -60,18 +60,18 @@
         SELECT c_owner_id
         FROM t_owner_role
         WHERE c_role_id = #{arg0}
---         AND (c_disabled = 1 OR c_disabled IS NULL)
---         AND (c_effect_time IS NULL OR NOW() > c_effect_time)
---         AND (c_expire_time IS NULL OR c_expire_time > NOW())
+        -- AND (c_disabled = 1 OR c_disabled IS NULL)
+        -- AND (c_effect_time IS NULL OR NOW() > c_effect_time)
+        -- AND (c_expire_time IS NULL OR c_expire_time > NOW())
     </select>
 
     <select id="getRoleIdsByOwnerId" resultType="java.lang.Integer">
         SELECT c_role_id
         FROM t_owner_role
         WHERE c_owner_id = #{arg0}
---         AND (c_disabled = 1 OR c_disabled IS NULL)
---         AND (c_effect_time IS NULL OR NOW() > c_effect_time)
---         AND (c_expire_time IS NULL OR c_expire_time > NOW())
+        -- AND (c_disabled = 1 OR c_disabled IS NULL)
+        -- AND (c_effect_time IS NULL OR NOW() > c_effect_time)
+        -- AND (c_expire_time IS NULL OR c_expire_time > NOW())
     </select>
 
     <select id="getByOwnerId" resultMap="BaseResultMap">

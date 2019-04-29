@@ -3,6 +3,8 @@ package com.k2data.kbc.auth.controller;
 import com.k2data.kbc.api.KbcBizException;
 import com.k2data.kbc.api.KbcResponse;
 import com.k2data.kbc.auth.service.PermmgrSevice;
+import com.k2data.kbc.auth.service.request.ConfigOwnerPermissionsRequest;
+import com.k2data.kbc.auth.service.request.ConfigOwnerRolesRequest;
 import com.k2data.kbc.auth.service.request.CreateRoleRequest;
 import com.k2data.kbc.auth.service.request.ModifyPermissionRequest;
 import io.swagger.annotations.Api;
@@ -41,34 +43,26 @@ public class PermmgrController {
     }
 
     @ApiOperation("删除拥有者关联的角色")
-    @DeleteMapping("/rowners/{roleOwnerId}/roles/{roleId}")
-    public KbcResponse deleteOwnerRole(@PathVariable Integer roleOwnerId,
-        @PathVariable Integer roleId) {
-        permmgrSevice.deleteOwnerRole(roleOwnerId, roleId);
+    @DeleteMapping("/rowners/{roleOwnerId}/roles")
+    public KbcResponse deleteOwnerRoles(@PathVariable Integer roleOwnerId,
+        @RequestParam String roleIds) {
+        permmgrSevice.deleteOwnerRoles(roleOwnerId, roleIds);
         return KbcResponse.SUCCESS;
     }
 
     @ApiOperation("删除拥有者关联的权限")
-    @DeleteMapping("/owners/{ownerId}/permissions/{resourceId}")
-    public KbcResponse deleteOwnerPermission(@PathVariable Integer ownerId,
-        @PathVariable Integer resourceId) {
-        permmgrSevice.deleteOwnerPermission(ownerId, resourceId);
+    @DeleteMapping("/owners/{ownerId}/permissions")
+    public KbcResponse deleteOwnerPermissions(@PathVariable Integer ownerId,
+        @RequestParam String resourceIds) {
+        permmgrSevice.deleteOwnerPermissions(ownerId, resourceIds);
         return KbcResponse.SUCCESS;
     }
 
     @ApiOperation("删除角色关联的权限")
-    @DeleteMapping("/roles/{roleId}/permissions/{resourceId}")
+    @DeleteMapping("/roles/{roleId}/permissions")
     public KbcResponse deleteRolePermission(@PathVariable Integer roleId,
-        @PathVariable Integer resourceId) {
-        permmgrSevice.deleteRolePermission(roleId, resourceId);
-        return KbcResponse.SUCCESS;
-    }
-
-    @ApiOperation("更新拥有者下的权限")
-    @PutMapping("/owners/{ownerId}/permissions")
-    public KbcResponse modifyOwnerPermissions(@PathVariable Integer ownerId,
-        @RequestBody ModifyPermissionRequest modifyPermissionRequest) {
-        permmgrSevice.modifyOwnerPermissions(ownerId, modifyPermissionRequest);
+        @RequestParam String resourceIds) {
+        permmgrSevice.deleteRolePermissions(roleId, resourceIds);
         return KbcResponse.SUCCESS;
     }
 
@@ -89,34 +83,48 @@ public class PermmgrController {
         return KbcResponse.SUCCESS;
     }
 
+    @ApiOperation("更新拥有者下的权限")
+    @PutMapping("/owners/{ownerId}/permissions")
+    public KbcResponse modifyOwnerPermissions(@PathVariable Integer ownerId,
+        @RequestBody ModifyPermissionRequest modifyPermissionRequest) {
+        permmgrSevice.modifyOwnerPermissions(ownerId, modifyPermissionRequest);
+        return KbcResponse.SUCCESS;
+    }
+
     @ApiOperation("更新角色下的权限")
     @PutMapping("/roles/{roleId}/permissions")
     public KbcResponse modifyRolePermssions(@PathVariable Integer roleId,
-        @RequestParam(required = false) String resourceIds, @RequestParam(required = false) String operations) {
+        @RequestBody ModifyPermissionRequest modifyPermissionRequest) {
 
-        permmgrSevice.modifyRolePermssions(roleId, resourceIds, operations);
+        permmgrSevice.modifyRolePermssions(roleId, modifyPermissionRequest);
         return KbcResponse.SUCCESS;
     }
 
-    @ApiOperation("设置拥有者角色是否可用")
-    @PutMapping(value = "/rowners/{roleOwnerId}/roles/{roleId}")
-    public KbcResponse availableOwnerRole(@PathVariable Integer roleOwnerId,
-        @PathVariable Integer roleId,
-        @RequestParam(required = false) Long effectTime,
-        @RequestParam(required = false) Long expireTime,
-        @RequestParam(required = false) Boolean disabled) {
-        permmgrSevice.availableOwnerRole(roleOwnerId, roleId, effectTime, expireTime, disabled);
+    @ApiOperation("配置角色下的权限")
+    @PutMapping(value = "/roles/{roleId}/permissions", params = "action=config")
+    public KbcResponse configRolePermssions(@PathVariable Integer roleId,
+        @RequestParam String resourceIds,
+        @RequestParam String operations) {
+        permmgrSevice.configRolePermssions(roleId, resourceIds, operations);
         return KbcResponse.SUCCESS;
     }
 
-    @ApiOperation("设置拥有者权限是否可用")
-    @PutMapping(value = "/owners/{ownerId}/permissions/{resourceId}")
-    public KbcResponse availableOwnerPermission(@PathVariable Integer ownerId,
-        @PathVariable Integer resourceId,
-        @RequestParam(required = false) Long effectTime,
-        @RequestParam(required = false) Long expireTime,
-        @RequestParam(required = false) Boolean disabled) {
-        permmgrSevice.availableOwnerPermission(ownerId, resourceId, effectTime, expireTime, disabled);
+    @ApiOperation("配置拥有者的角色")
+    @PutMapping(value = "/rowners/{roleOwnerId}/roles", params = "action=config")
+    public KbcResponse configOwnerRoles(@PathVariable Integer roleOwnerId,
+        @RequestParam String roleIds,
+        @RequestBody ConfigOwnerRolesRequest configOwnerRolesRequest) {
+        permmgrSevice.configOwnerRoles(roleOwnerId, roleIds, configOwnerRolesRequest);
+        return KbcResponse.SUCCESS;
+    }
+
+    @ApiOperation("配置拥有者的权限")
+    @PutMapping(value = "/owners/{ownerId}/permissions", params = "action=config")
+    public KbcResponse configOwnerPermissions(@PathVariable Integer ownerId,
+        @RequestParam String resourceIds,
+        @RequestBody ConfigOwnerPermissionsRequest configOwnerPermissionsRequest) {
+        permmgrSevice
+            .configOwnerPermissions(ownerId, resourceIds, configOwnerPermissionsRequest);
         return KbcResponse.SUCCESS;
     }
 
@@ -134,7 +142,8 @@ public class PermmgrController {
         @RequestParam Integer resourceTypeId,
         @RequestParam(required = false) String fuzzyResName) {
         KbcResponse response = new KbcResponse();
-        response.getBody().put("roles", permmgrSevice.listRolePermissions(roleId, resourceTypeId, fuzzyResName));
+        response.getBody()
+            .put("roles", permmgrSevice.listRolePermissions(roleId, resourceTypeId, fuzzyResName));
         return response;
     }
 
@@ -157,9 +166,11 @@ public class PermmgrController {
 
     @ApiOperation("查询拥有者下的权限列表（不包含关联角色下的权限）")
     @GetMapping(value = "/owners/{ownerId}/permissions", params = "resourceTypeId")
-    public KbcResponse listOwnerdDirectPermissions(@PathVariable Integer ownerId, @RequestParam Integer resourceTypeId, @RequestParam(required = false) String fuzzyResName) {
+    public KbcResponse listOwnerdDirectPermissions(@PathVariable Integer ownerId,
+        @RequestParam Integer resourceTypeId, @RequestParam(required = false) String fuzzyResName) {
         KbcResponse response = new KbcResponse();
-        response.getBody().put("permissions", permmgrSevice.getPermissionsByPermOwnerId(ownerId, resourceTypeId, fuzzyResName));
+        response.getBody().put("permissions",
+            permmgrSevice.getPermissionsByPermOwnerId(ownerId, resourceTypeId, fuzzyResName));
         return response;
     }
 }
