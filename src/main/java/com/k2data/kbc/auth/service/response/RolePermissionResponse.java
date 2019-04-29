@@ -5,6 +5,11 @@ import com.k2data.kbc.auth.model.RolePermission;
 
 public class RolePermissionResponse {
 
+    private Integer roleId;
+    private Integer resourceId;
+    private String resourceName;
+    private String operations;
+
     public RolePermissionResponse() {
     }
 
@@ -14,14 +19,6 @@ public class RolePermissionResponse {
         this.resourceName = resource.getName();
         this.operations = rolePermission.getOperations();
     }
-
-    private Integer roleId;
-
-    private Integer resourceId;
-
-    private String resourceName;
-
-    private String operations;
 
     public Integer getRoleId() {
         return roleId;

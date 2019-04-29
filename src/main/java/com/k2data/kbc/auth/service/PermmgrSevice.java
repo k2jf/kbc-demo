@@ -11,6 +11,8 @@ import com.k2data.kbc.auth.model.OwnerRole;
 import com.k2data.kbc.auth.model.Resource;
 import com.k2data.kbc.auth.model.Role;
 import com.k2data.kbc.auth.model.RolePermission;
+import com.k2data.kbc.auth.service.request.ConfigOwnerPermissionsRequest;
+import com.k2data.kbc.auth.service.request.ConfigOwnerRolesRequest;
 import com.k2data.kbc.auth.service.request.CreateRoleRequest;
 import com.k2data.kbc.auth.service.request.ModifyPermissionRequest;
 import com.k2data.kbc.auth.service.response.OwnerRoleResponse;
@@ -24,6 +26,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 public class PermmgrSevice {
@@ -68,57 +71,34 @@ public class PermmgrSevice {
         ownerRoleMapper.deleteByOwnerId(ownerId);
     }
 
-    public void deleteOwnerRole(Integer roleOwnerId, Integer roleId) {
-        ownerRoleMapper.deleteByOwnerIdAndRoleId(roleOwnerId, roleId);
-    }
+    public void deleteOwnerRoles(Integer roleOwnerId, String roleIdsStr) {
+        if (null == roleOwnerId || StringUtils.isEmpty(roleIdsStr)) {
+            return;
+        }
 
-    public void deleteOwnerPermission(Integer ownerId, Integer resourceId) {
-        ownerPermissionMapper.delete(ownerId, resourceId);
-    }
-
-    public void deleteRolePermission(Integer roleId, Integer resourceId) {
-        rolePermissionMapper.delete(roleId, resourceId);
+        for (String roleIdStr : roleIdsStr.split(",")) {
+            ownerRoleMapper.deleteByOwnerIdAndRoleId(roleOwnerId, Integer.valueOf(roleIdStr));
+        }
     }
 
     @Transactional
-    public void modifyOwnerPermissions(Integer permOwnerId,
-        ModifyPermissionRequest modifyPermissionRequest) {
-
-        String[] roleIdStrs = null == modifyPermissionRequest.getResourceIds() ? new String[0]
-            : modifyPermissionRequest.getResourceIds().split(",");
-
-        List<OwnerPermission> ownerPermissions = ownerPermissionMapper.getByOwnerId(permOwnerId);
-
-        // 新增
-        for (String resourceIdStr : roleIdStrs) {
-            Integer resourceId = Integer.valueOf(resourceIdStr);
-            boolean existed = false;
-            for (OwnerPermission ownerPermission : ownerPermissions) {
-                if (ownerPermission.getResourceId() == resourceId) {
-                    existed = true;
-                }
-            }
-
-            if (!existed) {
-                OwnerPermission newPermission = new OwnerPermission();
-                newPermission.setOwnerId(permOwnerId);
-                newPermission.setResourceId(resourceId);
-                newPermission.setOperations(modifyPermissionRequest.getOperations());
-                ownerPermissionMapper.insert(newPermission);
-            }
+    public void deleteOwnerPermissions(Integer ownerId, String resourceIdsStr) {
+        if (null == ownerId || StringUtils.isEmpty(resourceIdsStr)) {
+            return;
         }
 
-        for (OwnerPermission ownerPermission : ownerPermissions) {
-            boolean existed = false;
-            for (String resourceIdStr : roleIdStrs) {
-                if (ownerPermission.getResourceId() == Integer.valueOf(resourceIdStr)) {
-                    existed = true;
-                }
-            }
+        for (String resourceIdStr : resourceIdsStr.split(",")) {
+            ownerPermissionMapper.delete(ownerId, Integer.valueOf(resourceIdStr));
+        }
+    }
 
-            if (!existed) {
-                ownerPermissionMapper.delete(permOwnerId, ownerPermission.getResourceId());
-            }
+    @Transactional
+    public void deleteRolePermissions(Integer roleId, String resourceIdsStr) {
+        if (null == roleId || StringUtils.isEmpty(resourceIdsStr)) {
+            return;
+        }
+        for (String resourceIdStr : resourceIdsStr.split(",")) {
+            rolePermissionMapper.delete(roleId, Integer.valueOf(resourceIdStr));
         }
     }
 
@@ -208,8 +188,61 @@ public class PermmgrSevice {
     }
 
     @Transactional
-    public void modifyRolePermssions(Integer roleId, String resourceIdsStr, String operations) {
-        String[] resourceIdStrs = null == resourceIdsStr ? new String[0] : resourceIdsStr.split(",");
+    public void modifyOwnerPermissions(Integer permOwnerId,
+        ModifyPermissionRequest modifyPermissionRequest) {
+
+        String[] resourceIdStrs = null == modifyPermissionRequest.getResourceIds() ? new String[0]
+            : modifyPermissionRequest.getResourceIds().split(",");
+
+        List<OwnerPermission> ownerPermissions = ownerPermissionMapper.getByOwnerId(permOwnerId);
+
+        // 新增
+        for (String resourceIdStr : resourceIdStrs) {
+            Integer resourceId = Integer.valueOf(resourceIdStr);
+            boolean existed = false;
+            for (OwnerPermission ownerPermission : ownerPermissions) {
+                if (ownerPermission.getResourceId() == resourceId) {
+                    existed = true;
+                }
+            }
+
+            if (!existed) {
+                OwnerPermission newPermission = new OwnerPermission();
+                newPermission.setOwnerId(permOwnerId);
+                newPermission.setResourceId(resourceId);
+                ownerPermissionMapper.insert(newPermission);
+            }
+        }
+
+        List<Resource> resources = null;
+        if (null != modifyPermissionRequest.getResourceTypeId()) {
+            resources = resmgrService.list(modifyPermissionRequest.getResourceTypeId(), null);
+        }
+        for (OwnerPermission ownerPermission : ownerPermissions) {
+            if (null != resources && !resmgrService
+                .existed(ownerPermission.getResourceId(), resources)) {
+                continue;
+            }
+
+            boolean existed = false;
+            for (String resourceIdStr : resourceIdStrs) {
+                if (ownerPermission.getResourceId() == Integer.valueOf(resourceIdStr)) {
+                    existed = true;
+                }
+            }
+
+            // 资源存在且属于某一类资源时可删除
+            if (!existed) {
+                ownerPermissionMapper.delete(permOwnerId, ownerPermission.getResourceId());
+            }
+        }
+    }
+
+    @Transactional
+    public void modifyRolePermssions(Integer roleId,
+        ModifyPermissionRequest modifyPermissionRequest) {
+        String[] resourceIdStrs = null == modifyPermissionRequest.getResourceIds() ? new String[0]
+            : modifyPermissionRequest.getResourceIds().split(",");
 
         List<Integer> existResourceIds = rolePermissionMapper.getResourceIdByRoleId(roleId);
 
@@ -229,55 +262,86 @@ public class PermmgrSevice {
                 RolePermission rolePermission = new RolePermission();
                 rolePermission.setRoleId(roleId);
                 rolePermission.setResourceId(resourceId);
-                rolePermission.setOperations(operations);
                 rolePermissionMapper.insert(rolePermission);
             }
         }
 
         // 获取已剔除
+        List<Resource> resources = null;
+        if (null != modifyPermissionRequest.getResourceTypeId()) {
+            resources = resmgrService.list(modifyPermissionRequest.getResourceTypeId(), null);
+        }
         for (Integer existResourceId : existResourceIds) {
-            boolean existed = false;
+            if (null != resources && !resmgrService.existed(existResourceId, resources)) {
+                continue;
+            }
 
+            boolean existed = false;
             for (String resourceIdStr : resourceIdStrs) {
                 if (Integer.valueOf(resourceIdStr) == existResourceId) {
                     existed = true;
                 }
             }
 
+            // 资源存在且属于某一类资源时可删除
             if (!existed) {
                 rolePermissionMapper.delete(roleId, existResourceId);
             }
         }
     }
 
-    public void availableOwnerRole(Integer roleOwnerId, Integer roleId, Long effectTime,
-        Long expireTime, Boolean disabled) {
-        OwnerRole ownerRole = new OwnerRole();
-        ownerRole.setOwnerId(roleOwnerId);
-        ownerRole.setRoleId(roleId);
-        if (null != effectTime) {
-            ownerRole.setEffectTime(new Date(effectTime));
+    public void configRolePermssions(Integer roleId, String resourceIdsStr, String operations) {
+        if (null == roleId || StringUtils.isEmpty(resourceIdsStr) || StringUtils.isEmpty(operations)) {
+            return;
         }
-        if (null != expireTime) {
-            ownerRole.setExpireTime(new Date(expireTime));
+        for (String resourceIdStr : resourceIdsStr.split(",")) {
+            RolePermission rolePermission = new RolePermission();
+            rolePermission.setRoleId(roleId);
+            rolePermission.setResourceId(Integer.valueOf(resourceIdStr));
+            rolePermission.setOperations(operations);
+            rolePermissionMapper.update(rolePermission);
         }
-        ownerRole.setDisabled(disabled);
-        ownerRoleMapper.update(ownerRole);
     }
 
-    public void availableOwnerPermission(Integer ownerId, Integer resourceId, Long effectTime,
-        Long expireTime, Boolean disabled) {
-        OwnerPermission ownerPermission = new OwnerPermission();
-        ownerPermission.setOwnerId(ownerId);
-        ownerPermission.setResourceId(resourceId);
-        if (null != effectTime) {
-            ownerPermission.setEffectTime(new Date(effectTime));
+    public void configOwnerRoles(Integer roleOwnerId, String roleIdsStr, ConfigOwnerRolesRequest request) {
+        if (null == roleOwnerId || StringUtils.isEmpty(roleIdsStr)) {
+            return;
         }
-        if (null != expireTime) {
-            ownerPermission.setExpireTime(new Date(expireTime));
+        for (String roleIdStr : roleIdsStr.split(",")) {
+            OwnerRole ownerRole = new OwnerRole();
+            ownerRole.setOwnerId(roleOwnerId);
+            ownerRole.setRoleId(Integer.valueOf(roleIdStr));
+            if (null != request.getEffectTime()) {
+                ownerRole.setEffectTime(new Date(request.getEffectTime()));
+            }
+            if (null != request.getExpireTime()) {
+                ownerRole.setExpireTime(new Date(request.getExpireTime()));
+            }
+            ownerRole.setDisabled(request.getDisabled());
+            ownerRoleMapper.update(ownerRole);
         }
-        ownerPermission.setDisabled(disabled);
-        ownerPermissionMapper.update(ownerPermission);
+    }
+
+    @Transactional
+    public void configOwnerPermissions(Integer ownerId, String resourceIdsStr, ConfigOwnerPermissionsRequest request) {
+        if (null == ownerId || StringUtils.isEmpty(resourceIdsStr)) {
+            return;
+        }
+        for (String resourceIdStr : resourceIdsStr.split(",")) {
+            Integer resourceId = Integer.valueOf(resourceIdStr);
+            OwnerPermission ownerPermission = new OwnerPermission();
+            ownerPermission.setOwnerId(ownerId);
+            ownerPermission.setResourceId(resourceId);
+            ownerPermission.setOperations(request.getOperations());
+            if (null != request.getEffectTime()) {
+                ownerPermission.setEffectTime(new Date(request.getEffectTime()));
+            }
+            if (null != request.getEffectTime()) {
+                ownerPermission.setExpireTime(new Date(request.getExpireTime()));
+            }
+            ownerPermission.setDisabled(request.getDisabled());
+            ownerPermissionMapper.update(ownerPermission);
+        }
     }
 
     public List<PermissionResponse> getPermissions(Integer permOwnerId,
@@ -310,7 +374,8 @@ public class PermmgrSevice {
         return roleMapper.list(condition);
     }
 
-    public List<RolePermissionResponse> listRolePermissions(Integer roleId, Integer resourceTypeId, String fuzzyResName) {
+    public List<RolePermissionResponse> listRolePermissions(Integer roleId, Integer resourceTypeId,
+        String fuzzyResName) {
         List<RolePermissionResponse> result = new ArrayList<>();
 
         List<Resource> resources = resmgrService.list(resourceTypeId, fuzzyResName);
@@ -388,12 +453,14 @@ public class PermmgrSevice {
                 permissionMap.put(permission.getResourceId(), permission);
                 continue;
             }
-            if (null == permission.getEffectTime() || permission.getEffectTime() < savedPermission
+            if (null == permission.getEffectTime() || (null != savedPermission
+                .getEffectTime()) && permission.getEffectTime() < savedPermission
                 .getEffectTime()) {
                 savedPermission.setEffectTime(permission.getEffectTime());
             }
-            if (null == permission.getExpireTime() || permission.getExpireTime() > savedPermission
-                .getExpireTime()) {
+            if (null == permission.getExpireTime() || (null != savedPermission
+                .getExpireTime() && permission.getExpireTime() > savedPermission
+                .getExpireTime())) {
                 savedPermission.setExpireTime(permission.getExpireTime());
             }
         }
@@ -401,11 +468,13 @@ public class PermmgrSevice {
         result.addAll(permissionMap.values());
         return result;
     }
+
     private List<PermissionResponse> getPermissionsByPermOwnerId(Integer permOwnerId) {
         return getPermissionsByPermOwnerId(permOwnerId, null, null);
     }
 
-    public List<PermissionResponse> getPermissionsByPermOwnerId(Integer permOwnerId, Integer resourceTypeId, String fuzzyResName) {
+    public List<PermissionResponse> getPermissionsByPermOwnerId(Integer permOwnerId,
+        Integer resourceTypeId, String fuzzyResName) {
         List<PermissionResponse> result = new ArrayList<>();
 
         List<OwnerPermission> ownerPermissions = null;
@@ -423,7 +492,6 @@ public class PermmgrSevice {
             resourceMap.put(resource.getId(), resource);
         }
 
-
         for (OwnerPermission ownerPermission : ownerPermissions) {
             Resource resource = resourceMap.get(ownerPermission.getResourceId());
             if (null == resource) {
@@ -439,6 +507,7 @@ public class PermmgrSevice {
             if (null != ownerPermission.getExpireTime()) {
                 permissionResponse.setExpireTime(ownerPermission.getExpireTime().getTime());
             }
+            permissionResponse.setDisabled(ownerPermission.getDisabled());
             permissionResponse.setOperations(ownerPermission.getOperations());
             result.add(permissionResponse);
         }
@@ -487,6 +556,7 @@ public class PermmgrSevice {
                 permissionResponse.setExpireTime(ownerRole.getExpireTime().getTime());
             }
             permissionResponse.setOperations(rolePermission.getOperations());
+            permissionResponse.setDisabled(ownerRole.getDisabled());
             result.add(permissionResponse);
         }
         return result;

@@ -28,15 +28,26 @@
         AND c_resource_id = #{arg1}
     </delete>
 
+    <update id="update" parameterType="com.k2data.kbc.auth.model.RolePermission">
+        UPDATE t_role_permission
+        <set>
+            <if test="operations != null">
+                c_operations = #{operations,jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE c_role_id = #{roleId}
+        AND c_resource_id = #{resourceId}
+    </update>
+
     <select id="getByRoleId" resultMap="BaseResultMap">
         SELECT *
         FROM t_role_permission
-        WHERE c_role_id =  #{arg0}
+        WHERE c_role_id = #{arg0}
     </select>
 
     <select id="getResourceIdByRoleId" resultType="java.lang.Integer">
         SELECT c_resource_id
         FROM t_role_permission
-        WHERE c_role_id =  #{arg0}
+        WHERE c_role_id = #{arg0}
     </select>
 </mapper>

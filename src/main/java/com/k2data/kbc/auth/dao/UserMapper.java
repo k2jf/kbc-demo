@@ -16,5 +16,7 @@ public interface UserMapper {
 
     User getById(Integer id);
 
+    User getByName(String name);
+
     List<User> list(UserCondition condition);
 }
