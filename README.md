@@ -24,7 +24,7 @@ cd kbc-demo
 mvn spring-boot:run
 ```
 
-###kbc-auth-login  如需登录
+### kbc-auth-login  如需登录
 ```
 http://localhost:9080/login?userName=admin&password=admin
 ```

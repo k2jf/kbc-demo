@@ -1,7 +1,6 @@
 package com.k2data.kbc.auth.login.config.intercepors;
 
 import com.k2data.kbc.api.KbcBizException;
-import com.k2data.kbc.auth.login.entity.User;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -17,8 +16,8 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession();
 
-        User user = (User) session.getAttribute("user");
-        if (user == null){
+        Boolean validFlag = (Boolean) session.getAttribute("validFlag");
+        if (validFlag == null || validFlag == false){
             throw new KbcBizException("用户未登录");
             //return false;
         }else {
