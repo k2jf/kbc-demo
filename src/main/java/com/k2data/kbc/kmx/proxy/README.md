@@ -1,4 +1,4 @@
-# kbc-kmx
+# kbc-kmx-proxy
 
 ## 依赖
 请先安装下面的kbc组件：
