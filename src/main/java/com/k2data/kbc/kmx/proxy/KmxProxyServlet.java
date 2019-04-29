@@ -1,5 +1,6 @@
-package com.k2data.kbc.kmx;
+package com.k2data.kbc.kmx.proxy;
 
+import com.k2data.kbc.kmx.proxy.KmxLoginController;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;

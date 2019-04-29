@@ -1,4 +1,4 @@
-package com.k2data.kbc.kmx;
+package com.k2data.kbc.kmx.proxy;
 
 import org.mitre.dsmiley.httpproxy.ProxyServlet;
 import org.springframework.beans.factory.annotation.Value;
