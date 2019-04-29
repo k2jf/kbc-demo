@@ -28,7 +28,7 @@ public class LoginController {
         boolean valid = usrmgrService.validateUserPassword(userName,password);
 
         if(valid){
-            request.getSession().setAttribute("validFlag",valid);
+            request.getSession().setAttribute("username",userName);
         }else {
             throw new KbcBizException("用户名密码或密码错误");
         }

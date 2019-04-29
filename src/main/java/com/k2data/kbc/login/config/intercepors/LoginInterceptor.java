@@ -16,8 +16,8 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession();
 
-        Boolean validFlag = (Boolean) session.getAttribute("validFlag");
-        if (validFlag == null || validFlag == false){
+        String userName = (String) session.getAttribute("username");
+        if (userName == null || userName.isEmpty()){
             throw new KbcBizException("用户未登录");
             //return false;
         }else {
