@@ -6,6 +6,9 @@
 ## 维护者
 wangliheng@k2data.com.cn
 
+## 依赖组件
+kbc-auth
+
 
 ## git拉取示例
 ```
