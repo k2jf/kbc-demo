@@ -26,7 +26,7 @@ mvn spring-boot:run
 
 ### kbc-auth-login  如需登录
 ```
-http://localhost:9080/login?userName=admin&password=admin
+http://localhost:9080/login?userName=admin&password=96e79218965eb72c92a549dd5a330112
 ```
 ### 查看接口文档
 ```
