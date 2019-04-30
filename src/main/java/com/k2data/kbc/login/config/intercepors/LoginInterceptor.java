@@ -14,6 +14,10 @@ import javax.servlet.http.HttpSession;
 public class LoginInterceptor implements HandlerInterceptor {
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        //OPTIONS 特殊处理
+        if(request.getMethod().equalsIgnoreCase( "OPTIONS")){
+            return true;
+        }
         HttpSession session = request.getSession();
 
         String userName = (String) session.getAttribute("username");
