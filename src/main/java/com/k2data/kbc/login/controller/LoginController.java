@@ -1,4 +1,4 @@
-package com.k2data.kbc.auth.login.controller;
+package com.k2data.kbc.login.controller;
 
 import com.k2data.kbc.api.KbcBizException;
 import com.k2data.kbc.api.KbcResponse;
@@ -28,7 +28,7 @@ public class LoginController {
         boolean valid = usrmgrService.validateUserPassword(userName,password);
 
         if(valid){
-            request.getSession().setAttribute("validFlag",valid);
+            request.getSession().setAttribute("username",userName);
         }else {
             throw new KbcBizException("用户名密码或密码错误");
         }
