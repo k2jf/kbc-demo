@@ -12,4 +12,6 @@ wangliheng@k2data.com.cn
 | ----------- | -------- | ------ | ------ |
 
 ## 使用说明
-mysql -uroot -p dbname < init_db.sql
+```
+mysql -ukbcadmin -p kbc < init_db.sql
+```
