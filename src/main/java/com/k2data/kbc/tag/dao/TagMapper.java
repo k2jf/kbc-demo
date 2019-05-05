@@ -12,5 +12,9 @@ public interface TagMapper {
 
     Tag selectById(Integer id);
 
+    Tag selectByName(String tagName);
+
     List<Tag> list(Tag tag);
+
+    int update(Tag tag);
 }
