@@ -1,7 +1,5 @@
 # kbc-audit
 
-拦截Controller
-
 #pom 校验依赖
 aop依赖
         <dependency>
@@ -22,5 +20,5 @@ fastjson json 依赖注意版本
             <artifactId>fastjson</artifactId>
             <version>1.2.29</version>
         </dependency>
-#注意切面拦截包配置:使用标配置的方法
+#注意拦截器拦截url配置
 

@@ -21,17 +21,17 @@
     </insert>
 
     <select id="list" resultMap="BaseResultMap" parameterType="map">
-        select id , create_date ,
-        group_key , key_name , key_value
+        select id , c_create_date ,
+        c_group_key , c_key ,c_value
         from t_properties
         <where>
-            <if test="groupKey != null">
+            <if test="groupKey != null ">
                 and c_group_key like CONCAT('%', #{groupKey}, '%')
             </if>
-            <if test="keyName != null">
+            <if test="key!= null">
                 and c_key like CONCAT('%', #{key}, '%')
             </if>
-            <if test="keyValue != null">
+            <if test="value != null">
                 and c_value like CONCAT('%', #{value}, '%')
             </if>
 
