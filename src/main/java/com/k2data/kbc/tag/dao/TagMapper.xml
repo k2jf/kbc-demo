@@ -2,24 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.k2data.kbc.tag.dao.TagMapper">
     <resultMap id="BaseResultMap" type="com.k2data.kbc.tag.model.Tag">
-        <result column="c_tag_id" jdbcType="INTEGER" property="id"/>
+        <result column="c_id" jdbcType="INTEGER" property="id"/>
         <result column="c_tag_name" jdbcType="VARCHAR" property="tagName"/>
         <result column="c_num" jdbcType="INTEGER" property="num"/>
     </resultMap>
 
     <sql id="Base_Column_List" >
-      id, username, password
+      c_id, c_tag_name, c_num
     </sql>
 
     <sql id="Table_Name">
-      USER
+      t_tag
     </sql>
 
     <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
         select
         <include refid="Base_Column_List" />
         from <include refid="Table_Name" />
-        where c_tag_id = #{id,jdbcType=INTEGER}
+        where c_id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from <include refid="Table_Name" />
+        where c_tag_name = #{tagName,jdbcType=INTEGER}
     </select>
 
     <insert id="insert" parameterType="com.k2data.kbc.tag.model.Tag" keyProperty="id">
@@ -42,5 +49,18 @@
             </if>
         </where>
     </select>
+
+    <update id="update" parameterType="com.k2data.kbc.tag.model.Tag">
+        UPDATE <include refid="Table_Name" />
+        <set>
+            <if test="tagName != null">
+                c_tag_name = #{tagName},
+            </if>
+            <if test="num != null">
+                c_num = #{num},
+            </if>
+        </set>
+        WHERE c_id = #{id}
+    </update>
 
 </mapper>

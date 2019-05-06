@@ -11,7 +11,7 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id"
         parameterType="com.k2data.kbc.properties.model.Properties">
-        INSERT INTO kbc_properties (
+        INSERT INTO t_properties (
          id ,  c_create_date ,
          c_group_key , c_key , c_value)
         VALUES (
@@ -23,7 +23,7 @@
     <select id="list" resultMap="BaseResultMap" parameterType="map">
         select id , create_date ,
         group_key , key_name , key_value
-        from kbc_properties
+        from t_properties
         <where>
             <if test="groupKey != null">
                 and c_group_key like CONCAT('%', #{groupKey}, '%')
@@ -46,7 +46,7 @@
 
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete from kbc_properties
+        delete from t_properties
           where id = #{id,jdbcType=INTEGER}
     </delete>
 
