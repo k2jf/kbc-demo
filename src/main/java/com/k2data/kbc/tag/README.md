@@ -11,3 +11,7 @@ wangliheng@k2data.com.cn
 | 属性        | 说明     | 类型   | 默认值 |
 | ----------- | -------- | ------ | ------ |
 
+## 使用说明
+```
+mysql -ukbcadmin -p kbc < init_db.sql
+```
