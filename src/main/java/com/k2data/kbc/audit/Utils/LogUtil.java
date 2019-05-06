@@ -1,30 +1,30 @@
 package com.k2data.kbc.audit.Utils;
 
-import com.k2data.kbc.audit.dao.AuditLogMapper;
-import com.k2data.kbc.audit.dao.ExceptionLogMapper;
-import com.k2data.kbc.audit.model.AuditLog;
-import com.k2data.kbc.audit.model.ExceptionLog;
+import com.k2data.kbc.audit.dao.AuditNormalLogMapper;
+import com.k2data.kbc.audit.dao.AuditExceptionLogMapper;
+import com.k2data.kbc.audit.model.AuditNormalLog;
+import com.k2data.kbc.audit.model.AuditExceptionLog;
 
 public class LogUtil {
 
 
-    private static AuditLogMapper auditLogDao = SpringContextHolderUtil.getBean(AuditLogMapper.class);
+    private static AuditNormalLogMapper auditLogDao = SpringContextHolderUtil.getBean(AuditNormalLogMapper.class);
 
-    private static ExceptionLogMapper exLogDao = SpringContextHolderUtil.getBean(ExceptionLogMapper.class);
+    private static AuditExceptionLogMapper exLogDao = SpringContextHolderUtil.getBean(AuditExceptionLogMapper.class);
 
-    public static void saveLog(AuditLog log) {
+    public static void saveLog(AuditNormalLog log) {
         new SaveLogRunnable(log).run();
     }
 
-    public static void saveExLogRunnable(ExceptionLog exlog) {
+    public static void saveExLogRunnable(AuditExceptionLog exlog) {
         new SaveExLogRunnable(exlog).run();
     }
 
     public static class SaveLogRunnable implements Runnable {
 
-        private AuditLog log;
+        private AuditNormalLog log;
 
-        public SaveLogRunnable(AuditLog log) {
+        public SaveLogRunnable(AuditNormalLog log) {
             log.setId(null);
             this.log = log;
         }
@@ -37,9 +37,9 @@ public class LogUtil {
 
     public static class SaveExLogRunnable implements Runnable {
 
-        private ExceptionLog exLog;
+        private AuditExceptionLog exLog;
 
-        public SaveExLogRunnable(ExceptionLog exLog) {
+        public SaveExLogRunnable(AuditExceptionLog exLog) {
             this.exLog = exLog;
         }
 

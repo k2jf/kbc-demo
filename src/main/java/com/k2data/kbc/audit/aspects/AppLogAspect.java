@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.k2data.kbc.audit.Utils.LogUtil;
 import com.k2data.kbc.audit.Utils.RequestUtil;
-import com.k2data.kbc.audit.model.AuditLog;
-import com.k2data.kbc.audit.model.ExceptionLog;
+import com.k2data.kbc.audit.model.AuditNormalLog;
+import com.k2data.kbc.audit.model.AuditExceptionLog;
 import java.util.Date;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -13,32 +13,30 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
-import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 
 /**
  * before：按order值有小到大的顺序执行
  * after：按order值由大到小的顺序执行
  */
 
-@Aspect
-@Order(2)
-@Component
+//@Aspect
+//@Order(2)
+//@Component
 public class AppLogAspect {
 
     private static final Logger logger = LoggerFactory.getLogger(AppLogAspect.class);
     private ThreadLocal<Long> threadLocal = new ThreadLocal<>();
-    private AuditLog log = new AuditLog();
-    private ExceptionLog exLog = new ExceptionLog();
+    private AuditNormalLog log = new AuditNormalLog();
+    private AuditExceptionLog exLog = new AuditExceptionLog();
 
     @Autowired
     private HttpServletRequest request;
+
 
     /**
      * 设置切点

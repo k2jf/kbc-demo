@@ -1,7 +1,7 @@
 package com.k2data.kbc.audit.controller;
 
 import com.k2data.kbc.api.KbcResponse;
-import com.k2data.kbc.audit.service.AuditLogService;
+import com.k2data.kbc.audit.service.NormalLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.HashMap;
@@ -17,14 +17,17 @@ public class AuditLogController {
 
 
     @Autowired
-    AuditLogService auditLogService;
+    NormalLogService normalLogService;
 
     @ApiOperation("get logs")
     @GetMapping(value = {"logs"})
     public KbcResponse list() {
         Map<String, Object> map = new HashMap<>();
         KbcResponse response = new KbcResponse();
-        response.getBody().put("logs", auditLogService.list(map));
+        int a =0;
+        int b=1;
+        int c = b/a;
+        response.getBody().put("logs", normalLogService.list(map));
         return response;
     }
 
@@ -34,7 +37,7 @@ public class AuditLogController {
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
         KbcResponse response = new KbcResponse();
-        response.getBody().put("log", auditLogService.list(map));
+        response.getBody().put("log", normalLogService.list(map));
         return response;
     }
 }
