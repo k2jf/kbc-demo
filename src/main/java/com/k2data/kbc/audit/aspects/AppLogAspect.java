@@ -1,11 +1,8 @@
 package com.k2data.kbc.audit.aspects;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.k2data.kbc.audit.Utils.LogUtil;
 import com.k2data.kbc.audit.Utils.RequestUtil;
-import com.k2data.kbc.audit.model.AuditNormalLog;
-import com.k2data.kbc.audit.model.AuditExceptionLog;
+import com.k2data.kbc.audit.model.AuditLog;
 import java.util.Date;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -31,8 +28,7 @@ public class AppLogAspect {
 
     private static final Logger logger = LoggerFactory.getLogger(AppLogAspect.class);
     private ThreadLocal<Long> threadLocal = new ThreadLocal<>();
-    private AuditNormalLog log = new AuditNormalLog();
-    private AuditExceptionLog exLog = new AuditExceptionLog();
+    private AuditLog log = new AuditLog();
 
     @Autowired
     private HttpServletRequest request;
@@ -78,11 +74,11 @@ public class AppLogAspect {
 
     @AfterThrowing(value = "serviceStatistics()", throwing = "e")
     public void doAfterThrowing(Throwable e) {
-        logger.info("doAfterThrowing(){}" + e);
+       /* logger.info("doAfterThrowing(){}" + e);
         exLog.setExceptionJson(JSON.toJSONString(e, SerializerFeature.DisableCircularReferenceDetect,
             SerializerFeature.WriteMapNullValue));
         exLog.setExceptionCreateTime(new Date(System.currentTimeMillis()));
         exLog.setExceptionMessage(e.getMessage());
-        LogUtil.saveExLogRunnable(exLog);
+        LogUtil.saveExLogRunnable(exLog);*/
     }
 }

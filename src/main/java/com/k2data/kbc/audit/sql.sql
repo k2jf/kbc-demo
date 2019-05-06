@@ -15,14 +15,3 @@ CREATE TABLE `t_audit_log` (
   `c_return_time` datetime DEFAULT NULL COMMENT '接口返回时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='日志表';
-
-
-SET FOREIGN_KEY_CHECKS=0;
-DROP TABLE IF EXISTS `t_exception_log`;
-CREATE TABLE `kbc_t_exception_log` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `c_exception_json` longtext COMMENT '异常对象以json形式',
-  `c_exception_message` longtext COMMENT '异常信息',
-  `c_exception_create_time` datetime DEFAULT NULL COMMENT '异常发生时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
