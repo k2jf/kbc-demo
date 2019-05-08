@@ -1,5 +1,6 @@
-package com.k2data.kbc.auth.controller;
+package com.k2data.kbc.auth.controller.usrmgr;
 
+import com.k2data.kbc.api.KbcBizException;
 import com.k2data.kbc.api.KbcResponse;
 import com.k2data.kbc.auth.service.UsrmgrService;
 import com.k2data.kbc.auth.service.request.CreateUserRequest;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api("用户管理接口")
+@Api("用户管理接口-用户")
 @RestController
 @RequestMapping("/usrmgr/users")
 public class UserController {
@@ -28,7 +29,7 @@ public class UserController {
 
     @ApiOperation("新增用户")
     @PostMapping
-    public KbcResponse createUser(@RequestBody CreateUserRequest createUserRequest) {
+    public KbcResponse createUser(@RequestBody CreateUserRequest createUserRequest) throws KbcBizException {
         usrmgrService.createUser(createUserRequest);
         return KbcResponse.SUCCESS;
     }
