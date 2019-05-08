@@ -18,6 +18,8 @@ import com.k2data.kbc.auth.service.response.UserDetailResponse;
 import com.k2data.kbc.auth.service.response.UserResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,12 +41,30 @@ public class UsrmgrService {
     PermmgrSevice permmgrSevice;
 
     @Transactional
-    public void createUser(CreateUserRequest createUserRequest) {
+    public void createUser(CreateUserRequest createUserRequest) throws KbcBizException {
+        // 校验
+        String name = createUserRequest.getName();
+        if (StringUtils.isEmpty(name)) {
+            throw new KbcBizException("用户名称不能为空！");
+        }
+        User existedUser = userMapper.getByName(name);
+        if (null != existedUser) {
+            throw new KbcBizException("用户名称已经存在！");
+        }
+        String password = createUserRequest.getPassword();
+        if (StringUtils.isEmpty(password)) {
+            throw new KbcBizException("密码不能为空！");
+        }
+        String email = createUserRequest.getEmail();
+        if (!isEmail(email)) {
+            throw new KbcBizException("邮箱不合法！");
+        }
+
         // 保存用户
         User user = new User();
-        user.setName(createUserRequest.getName());
-        user.setPassword(createUserRequest.getPassword());
-        user.setEmail(createUserRequest.getEmail());
+        user.setName(name);
+        user.setPassword(password);
+        user.setEmail(email);
         userMapper.insert(user);
 
         // 关联用户组
@@ -60,6 +80,21 @@ public class UsrmgrService {
             }
         }
     }
+
+    public boolean isEmail(String email) {
+        if (email == null) {
+            return false;
+        }
+        String regEx1 = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+        Pattern p = Pattern.compile(regEx1);
+        Matcher m = p.matcher(email);
+        if (m.matches()) {
+            return true;
+        }
+
+        return false;
+    }
+
 
     @Transactional
     public void deleteUser(Integer userId) {
