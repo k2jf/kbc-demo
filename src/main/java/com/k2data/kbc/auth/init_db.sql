@@ -68,7 +68,7 @@ CREATE TABLE `t_role` (
   `c_name` varchar(200) NOT NULL,
   `c_description` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`c_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for `t_role_permission`
@@ -91,7 +91,7 @@ CREATE TABLE `t_user` (
   `c_password` varchar(500) NOT NULL,
   `c_email` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`c_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for `t_user_group`
@@ -101,4 +101,33 @@ CREATE TABLE `t_user_group` (
   `c_id` tinyint(4) NOT NULL AUTO_INCREMENT,
   `c_name` varchar(200) NOT NULL,
   PRIMARY KEY (`c_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+-- ----------------------------
+-- init t_resource
+-- ----------------------------
+INSERT INTO `t_resource` VALUES ('1', '1', '测试菜单项1');
+INSERT INTO `t_resource` VALUES ('2', '1', '测试菜单项2');
+INSERT INTO `t_resource` VALUES ('3', '2', '测试资源项1');
+
+-- ----------------------------
+-- init t_resource_type
+-- ----------------------------
+INSERT INTO `t_resource_type` VALUES ('1', '测试菜单', 'VIEW,DELETE');
+INSERT INTO `t_resource_type` VALUES ('2', '测试资源', 'VIEW');
+
+-- ----------------------------
+-- init t_user
+-- ----------------------------
+INSERT INTO `t_user` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin@test.com');
+
+-- ----------------------------
+-- init t_user_group
+-- ----------------------------
+INSERT INTO `t_user_group` VALUES ('1', '测试用户组');
+
+-- ----------------------------
+-- Records of t_role
+-- ----------------------------
+INSERT INTO `t_role` VALUES ('1', '测试角色', '');
