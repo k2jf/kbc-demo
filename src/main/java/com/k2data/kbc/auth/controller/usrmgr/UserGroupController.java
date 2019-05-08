@@ -1,4 +1,4 @@
-package com.k2data.kbc.auth.controller;
+package com.k2data.kbc.auth.controller.usrmgr;
 
 import com.k2data.kbc.api.KbcBizException;
 import com.k2data.kbc.api.KbcResponse;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api("用户组管理接口")
+@Api("用户组管理接口-用户组")
 @RestController
 @RequestMapping("/usrmgr/usrgrps")
 public class UserGroupController {
