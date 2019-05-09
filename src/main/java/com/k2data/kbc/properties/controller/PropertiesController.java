@@ -33,7 +33,7 @@ public class PropertiesController {
         map.put("value", properties.getValue());
         map.put("groupKey", properties.getGroupKey());
         KbcResponse response = new KbcResponse();
-        response.getBody().put("audiLogList", propertiesService.list(map));
+        response.getBody().put("properties", propertiesService.list(map));
         return response;
     }
 
