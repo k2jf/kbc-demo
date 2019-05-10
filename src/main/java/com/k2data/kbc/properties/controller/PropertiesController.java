@@ -27,11 +27,8 @@ public class PropertiesController {
 
     @ApiOperation("list  key:value")
     @GetMapping(value = "propList")
-    public KbcResponse list(Properties properties) {
+    public KbcResponse list() {
         Map<String, Object> map = new HashMap<>();
-        map.put("key", properties.getKey());
-        map.put("value", properties.getValue());
-        map.put("groupKey", properties.getGroupKey());
         KbcResponse response = new KbcResponse();
         response.getBody().put("properties", propertiesService.list(map));
         return response;
@@ -44,18 +41,6 @@ public class PropertiesController {
         KbcResponse response = new KbcResponse();
         response.getBody().put("id", properties.getId());
         return response;
-    }
-
-    @ApiOperation("delete key:value")
-    @DeleteMapping(value = "prop/{id}")
-    public KbcResponse delete(@PathVariable int id) throws KbcBizException {
-        Map<String, Object> map = new HashMap<>();
-        map.put("id", id);
-        if (0 != propertiesService.list(map).size()) {
-            throw new KbcBizException("Target does not exist");
-        }
-        propertiesService.deleteByPrimaryKey(id);
-        return KbcResponse.SUCCESS;
     }
 
 }
