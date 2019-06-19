@@ -10,6 +10,4 @@ public interface PropertiesService {
 
     void save(Properties Properties);
 
-    void deleteByPrimaryKey(Integer id);
-
 }

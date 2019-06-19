@@ -3,6 +3,9 @@ package com.k2data.kbc.properties.service.Impl;
 import com.k2data.kbc.properties.dao.PropertiesMapper;
 import com.k2data.kbc.properties.model.Properties;
 import com.k2data.kbc.properties.service.PropertiesService;
+import java.awt.dnd.DropTarget;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +26,16 @@ public class PropertiesServiceImpl implements PropertiesService {
     }
 
     @Override
-    public void save(Properties Properties) {
-        mapper.insert(Properties);
+    public void save(Properties properties) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", properties.getId());
+        if (mapper.list(map).size() != 0) {
+            mapper.save(properties);
+        } else {
+            properties.setCreateDate(new Date());
+            mapper.insert(properties);
+        }
     }
 
-    @Override
-    public void deleteByPrimaryKey(Integer id) {
-         mapper.deleteByPrimaryKey(id);
-    }
+
 }
